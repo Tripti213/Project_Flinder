@@ -11,12 +11,10 @@ function HeroSection() {
     <h1>Find Your Perfect Roommate !</h1>
     <p>SWIPE, MATCH, MOVE IN</p>
     <div className='hero-btns'>
-    <Button className='btns' buttonStyle='btn--outline' buttonSize='btn--large'>
-      GET STARTED !
+    <Button className='btns' buttonStyle='btn--primary' buttonSize='btn--large'>
+      Create Account 
       </Button>
-      <Button className='btns' buttonStyle='btn--primary' buttonSize='btn--large'>
-      Discover Your Future Roommate Here<i className='far fa-play-circle' />
-      </Button>
+      
 
     
     </div>

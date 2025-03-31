@@ -27,7 +27,7 @@ video{
 .hero-container > h1{
     font-size: 100px;
     color: #fff;
-    margin-top: -100px;
+    margin-top: -1000px;
 }
 
 .hero-container > p{
@@ -43,7 +43,7 @@ video{
 
 /* Add styles for .hero-btns .btn or remove the ruleset if not needed */
 .hero-btns .btn{
-    margin: 6px;
+    margin: 10px;
 }
 
 .fa-play-circle{

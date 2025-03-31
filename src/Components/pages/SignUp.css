@@ -1,0 +1,120 @@
+/* Background container */
+.signup-container {
+  background-image: url('/public/images/home2.jpg'); /* Change this to your actual path */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* White box container */
+.form-container {
+  background: rgb(255, 255, 255);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  width: 700px;
+  text-align: center;
+}
+
+/* Form styling */
+.signup-form .form-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.signup-form label {
+  font-weight:bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.signup-form input,
+.signup-form select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+}
+
+/* Gender buttons */
+.gender-buttons {
+  display: flex;
+  gap: 100px;
+  color: black;
+  padding: 10px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.gender-buttons button {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background: rgb(255, 255, 255);
+  cursor: pointer;
+  border-radius: 500px;
+}
+
+.gender-buttons .selected {
+  background: #80521F;
+  color: rgb(0, 0, 0);
+  border: none;
+}
+
+/* Upload box */
+.upload-box {
+  border: 2px dashed #ccc;
+  padding: 15px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.upload-box img {
+  width: 40px;
+  display: block;
+  margin: auto;
+}
+
+/* Avatar selection */
+.avatars {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.avatars img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.avatars img.selected {
+  border: 2px solid #80521F;
+}
+
+/* Register button */
+.register-btn {
+  background-color: #80521F;
+  color: white;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 15px;
+}
+
+.register-btn:hover {
+  background-color: rgb(178, 138, 36);
+}
