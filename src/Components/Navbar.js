@@ -59,9 +59,7 @@ function Navbar() {
         
         <li className='nav-item'>
           <Link to='/profile' className='nav-links' onClick={closeMobileMenu}>
-            <div className='profile-circle'>
-              {userName ? userName.charAt(0) : 'P'}
-            </div>
+            <div className='profile-circle'></div>
           </Link>
         </li>
     </ul>
