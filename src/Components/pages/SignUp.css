@@ -3,20 +3,19 @@
   background-image: url('/public/images/home2.jpg'); /* Change this to your actual path */
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
+  background-attachment: fixed;
   height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  overflow: auto;
 }
 
 /* White box container */
 .form-container {
-  background: rgb(255, 255, 255);
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  width: 700px;
+  background: #fff;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  width: 600px;
+  margin: 40px auto;
   text-align: center;
 }
 
@@ -56,16 +55,20 @@
 .gender-buttons button {
   flex: 1;
   padding: 10px;
-  border: 1px solid #ccc;
-  background: rgb(255, 255, 255);
+  border: 1px solid #d8a326;
+  background: #f9f9f9;
   cursor: pointer;
-  border-radius: 500px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.gender-buttons button:hover {
+  background-color: #e0e0e0;
 }
 
 .gender-buttons .selected {
-  background: #80521F;
-  color: rgb(0, 0, 0);
-  border: none;
+  background: rgb(139, 63, 30);
+  color: #000;
 }
 
 /* Upload box */

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./preferences.css";
 
-const preferencesData = [
+export const preferencesData = [
   { id: 1, name: "Gym", image: "/images/gym.png" },
   { id: 2, name: "Music", image: "/images/music.jpg" },
   { id: 3, name: "Travel", image: "/images/travel.png" },
@@ -32,7 +32,7 @@ const Preferences = () => {
       alert("Please select at least 5 preferences.");
       return;
     }
-    navigate("/swipe"); // Change to the next page
+    navigate("/choice"); // Change to the choice page
   };
 
   return (

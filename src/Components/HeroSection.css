@@ -1,5 +1,3 @@
-
-
 video{
     width: 100%;
     height: 100%;
@@ -22,6 +20,9 @@ video{
     align-items: center;
     box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.2);
     object-fit: contain;
+    text-align: center;
+    padding: 40px 20px;
+    background-color: #f9f9f9;
 }
 
 .hero-container > h1{
@@ -39,6 +40,7 @@ video{
 
 .hero-btns{
     margin-top: 32px;
+    margin: 20px 0;
 }
 
 /* Add styles for .hero-btns .btn or remove the ruleset if not needed */
@@ -79,4 +81,51 @@ video{
     .btn{
         width:100%;
     }
+}
+
+.hero-container video {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.info-section {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.info-section h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.info-section p {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.info-section img {
+  width: 80%;
+  max-width: 600px;
+  margin: 20px 0;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.info-section img:hover {
+  transform: scale(1.05);
+}
+
+.cities-list {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.cities-list li {
+  margin: 5px 0;
+  color: #333;
 }

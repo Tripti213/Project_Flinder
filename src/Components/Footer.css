@@ -1,0 +1,48 @@
+footer {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px;
+  background: linear-gradient(90deg,rgb(112, 50, 23) 0%, rgb(128, 82, 31) 100%);
+  border-top: 1px solid #ddd;
+}
+
+.footer-section {
+  flex: 1;
+  padding: 10px;
+}
+
+.footer-section h2, .footer-section h3 {
+  margin-bottom: 10px;
+  color: #ddd;
+}
+
+.footer-section p, .footer-section a {
+  margin: 5px 0;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: normal;
+  font-family: Arial, sans-serif;
+}
+
+.footer-section button {
+  background-color: #000000;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.social-icons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  color: #ddd;
+}
+
+.social-icons i {
+  font-size: 20px;
+  color: #ffffff;
+  cursor: pointer;
+} 
