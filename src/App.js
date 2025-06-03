@@ -13,6 +13,7 @@ import Preferences from './Components/pages/preferences';
 import Profile from './Components/pages/Profile';
 import { UserProvider } from './Components/UserContext';
 import Footer from './Components/Footer';
+import ProtectedRoute from './Components/ProtectedRoute';
 
 function App() {
   return (
@@ -32,8 +33,22 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/login2" element={<Login2 />} />
           <Route path="/choice" element={<Choice />} />
-          <Route path="/preferences" element={<Preferences />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route 
+            path="/preferences" 
+            element={
+              <ProtectedRoute>
+                <Preferences />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/profile" 
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            } 
+          />
         </Routes>
         <Footer />
       </Router>

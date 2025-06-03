@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "../../supabaseClient";
 import "./preferences.css";
 
 export const preferencesData = [
@@ -27,13 +28,38 @@ const Preferences = () => {
     );
   };
 
-  const handleContinue = () => {
-    if (selectedPreferences.length < 5) {
-      alert("Please select at least 5 preferences.");
-      return;
-    }
-    navigate("/choice"); // Change to the choice page
-  };
+const handleContinue = async () => {
+  if (selectedPreferences.length < 5) {
+    alert("Please select at least 5 preferences.");
+    return;
+  }
+
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  const userId = user?.id;
+
+  if (authError || !userId) {
+    alert("User not logged in.");
+    return;
+  }
+
+  // Map selected preferences to Supabase UUIDs
+  const preferenceInsertData = preferencesData
+    .filter((pref) => selectedPreferences.includes(pref.id))
+    .map((pref) => ({
+      user_id: userId,
+      preference_id: pref.id, // assuming you're using numeric IDs in DB (update if using UUIDs)
+    }));
+
+  const { error } = await supabase.from("user_preferences").insert(preferenceInsertData);
+
+  if (error) {
+    console.error("Error inserting preferences:", error.message);
+    alert("Failed to save preferences. Try again.");
+    return;
+  }
+
+  navigate("/choice");
+};
 
   return (
     <div className="preferences-container">

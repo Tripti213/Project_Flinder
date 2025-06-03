@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import "./SignUp.css";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../UserContext";
+import { supabase } from "../../supabaseClient";
 
 export const avatars = [
   "https://avataaars.io/?avatarStyle=Circle&topType=LongHairStraightStrand&accessoriesType=Sunglasses&hairColor=Brown&facialHairType=Blank&clotheType=CollarSweater&clotheColor=PastelYellow&eyeType=Surprised&eyebrowType=FlatNatural&mouthType=Smile&skinColor=Pale",
@@ -16,18 +17,88 @@ const SignUp = () => {
   const [selectedGender, setSelectedGender] = useState(null);
   const [selectedAvatar, setSelectedAvatar] = useState(null);
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [age, setAge] = useState("");
   const [city, setCity] = useState("");
   const [occupation, setOccupation] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    if (!name || !age || !selectedGender || !city || !selectedAvatar || !occupation) {
-      alert("Please fill in all fields.");
+    setLoading(true);
+    setError(null);
+
+    if (!name || !email || !password || !age || !selectedGender || !city || !selectedAvatar || !occupation) {
+      setError("Please fill in all fields.");
+      setLoading(false);
       return;
     }
-    setUser({ isSignedUp: true, name });
-    navigate("/preferences");
+
+    try {
+      // 1. Sign up the user with Supabase Auth
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+
+      if (authError) throw authError;
+
+      // 2. Check if profile already exists
+      const { data: existingProfile } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('id', authData.user.id)
+        .single();
+
+      if (existingProfile) {
+        // If profile exists, update it instead of inserting
+        const { error: updateError } = await supabase
+          .from('profiles')
+          .update({
+            name,
+            age: parseInt(age),
+            gender: selectedGender,
+            city,
+            occupation,
+            avatar_url: selectedAvatar,
+            updated_at: new Date(),
+          })
+          .eq('id', authData.user.id);
+
+        if (updateError) throw updateError;
+      } else {
+        // If profile doesn't exist, insert new profile
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .insert([
+            {
+              id: authData.user.id,
+              name,
+              age: parseInt(age),
+              gender: selectedGender,
+              city,
+              occupation,
+              avatar_url: selectedAvatar,
+              created_at: new Date(),
+            },
+          ]);
+
+        if (profileError) throw profileError;
+      }
+
+      // 3. Update local user context
+      setUser({ isSignedUp: true, name, id: authData.user.id });
+      
+      // 4. Navigate to preferences page
+      navigate("/preferences");
+    } catch (error) {
+      setError(error.message);
+      console.error('Error during sign up:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const cities = [
@@ -47,25 +118,55 @@ const SignUp = () => {
     "Gulbarga", "Jamnagar", "Ujjain", "Loni", "Siliguri", "Jhansi",
     "Ulhasnagar", "Nellore", "Jammu", "Belgaum", "Mangalore", "Udaipur",
     "Tirunelveli", "Malegaon", "Gaya", "Tiruppur", "Davanagere", "Kozhikode",
-    "Akola", "Kurnool", "Bokaro", "Rajahmundry", "Ballari", "Agartala",
+    "Akola", "Kurnool", "Bokaro",
     "Bhagalpur", "Latur", "Dhule", "Korba", "Bhilwara", "Brahmapur",
   ];
 
   return (
     <div className="signup-container">
-      <div className="form-container"> {/* White box container */}
+      <div className="form-container">
         <h2>Sign Up</h2>
-
-        <form className="signup-form">
+        {error && <div className="error-message">{error}</div>}
+        <form className="signup-form" onSubmit={handleRegister}>
           <div className="form-group">
             <label>Your Name*</label>
-            <input type="text" placeholder="Please enter your name" value={name} onChange={(e) => setName(e.target.value)} />
+            <input 
+              type="text" 
+              placeholder="Please enter your name" 
+              value={name} 
+              onChange={(e) => setName(e.target.value)} 
+            />
             <small>(Note: Users with real names get 90% more engagement.)</small>
           </div>
 
           <div className="form-group">
+            <label>Email*</label>
+            <input 
+              type="email" 
+              placeholder="Please enter your email" 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} 
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Password*</label>
+            <input 
+              type="password" 
+              placeholder="Please enter your password" 
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} 
+            />
+          </div>
+
+          <div className="form-group">
             <label>Your Age*</label>
-            <input type="number" placeholder="Please enter your age" value={age} onChange={(e) => setAge(e.target.value)} />
+            <input 
+              type="number" 
+              placeholder="Please enter your age" 
+              value={age} 
+              onChange={(e) => setAge(e.target.value)} 
+            />
           </div>
 
           <div className="form-group">
@@ -100,7 +201,12 @@ const SignUp = () => {
 
           <div className="form-group">
             <label>Your Occupation*</label>
-            <input type="text" placeholder="Please enter your occupation" value={occupation} onChange={(e) => setOccupation(e.target.value)} />
+            <input 
+              type="text" 
+              placeholder="Please enter your occupation" 
+              value={occupation} 
+              onChange={(e) => setOccupation(e.target.value)} 
+            />
           </div>
 
           <div className="form-group">
@@ -129,8 +235,12 @@ const SignUp = () => {
             </div>
           </div>
 
-          <button className="register-btn" onClick={handleRegister}>
-            Register
+          <button 
+            className="register-btn" 
+            type="submit" 
+            disabled={loading}
+          >
+            {loading ? "Registering..." : "Register"}
           </button>
         </form>
       </div>

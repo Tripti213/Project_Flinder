@@ -1,9 +1,56 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../UserContext";
+import { supabase } from "../../supabaseClient";
 import "./Login.css";
 
 function Login() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const { setUser } = useContext(UserContext);
     const navigate = useNavigate();
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setError(null);
+
+        try {
+            // Sign in with Supabase
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email,
+                password,
+            });
+
+            if (error) throw error;
+
+            // Fetch user profile data
+            const { data: profileData, error: profileError } = await supabase
+                .from("profiles")
+                .select("*")
+                .eq("id", data.user.id)
+                .single();
+
+            if (profileError) throw profileError;
+
+            // Update user context
+            setUser({
+                isSignedUp: true,
+                name: profileData.name,
+                id: data.user.id,
+            });
+
+            // Navigate to preferences page
+            navigate("/preferences");
+        } catch (error) {
+            setError(error.message);
+            console.error("Error during login:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="login-container">
@@ -12,16 +59,30 @@ function Login() {
                 <h2>🏡 Login to Flinder</h2>
                 <p>Welcome Back! Please enter your details.</p>
 
-                <form>
-                    <label>Email or Phone</label>
-                    <input type="text" placeholder="Enter Email or Mobile No." required />
+                {error && <div className="error-message">{error}</div>}
+
+                <form onSubmit={handleLogin}>
+                    <label>Email</label>
+                    <input
+                        type="email"
+                        placeholder="Enter your email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
 
                     <label>Password</label>
-                    <input type="password" placeholder="Enter Your Password" required />
+                    <input
+                        type="password"
+                        placeholder="Enter your password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
 
-                    
-                    <button onClick={() => navigate("/login2")}>Next </button>
-
+                    <button type="submit" disabled={loading}>
+                        {loading ? "Logging in..." : "Login"}
+                    </button>
                 </form>
 
                 <p className="switch">
@@ -33,7 +94,6 @@ function Login() {
             {/* Right Side - Image */}
             <div className="login-image">
                 <img src="/images/loginpg.webp" alt="Flatmates" />
-
             </div>
         </div>
     );

@@ -40,6 +40,16 @@
   border-radius: 15px;
 }
 
+/* Error message */
+.error-message {
+  background-color: #ffebee;
+  color: #c62828;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  text-align: left;
+}
+
 /* Gender buttons */
 .gender-buttons {
   display: flex;
@@ -116,8 +126,25 @@
   cursor: pointer;
   font-size: 16px;
   margin-top: 15px;
+  transition: background-color 0.3s ease;
 }
 
-.register-btn:hover {
+.register-btn:hover:not(:disabled) {
   background-color: rgb(178, 138, 36);
+}
+
+.register-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* Form validation styles */
+.signup-form input:invalid {
+  border-color: #ff6b6b;
+}
+
+.signup-form input:focus {
+  outline: none;
+  border-color: #80521F;
+  box-shadow: 0 0 0 2px rgba(128, 82, 31, 0.2);
 }
